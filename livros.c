@@ -5,9 +5,9 @@
 // Função para pedir dados do usuário e retornar como uma string
 char *pedirString(const char *mensagem)
 {
-    static char entrada[100]; // Usaremos uma variável estática para garantir que ela persista após a função terminar
+    static char entrada[100];
     printf("%s", mensagem);
-    scanf(" %99[^\n]", entrada); // Ler a entrada do usuário até uma quebra de linha, limitando a 99 caracteres para evitar estouro de buffer
+    scanf(" %s", entrada); 
     return entrada;
 }
 
