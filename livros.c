@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-    // Estrutura para representar um livro
-    typedef struct Livro
+// Estrutura para representar um livro
+typedef struct Livro
 {
     int codigo;
     char titulo[100];
@@ -198,15 +198,50 @@ int main()
             }
             break;
 
-        case 2:
+            // criar categoria
+        case #:
             char nome[100];
             printf("Introduza o nome da categoria: \n");
             scanf("%s", nome);
             criarCategoria(nome);
             break;
 
-        case 3:
-            printf("Introduza o título do livro a adicionar: ");
+            // criar um livro
+        case #:
+            char nome[100];
+            char categoria[100];
+            int codigo;
+
+            printf("Introduza o codigo do livro: \n");
+            scanf("%d", codigo);
+            printf("Introduza o nome do livro: \n");
+            scanf("%s", nome);
+
+            printf("selecione a categoria");
+            scanf("%s", categoria);
+
+            Categoria *cat = biblioteca.categorias;
+            while (cat != NULL)
+            {
+                if (strcmp(cat->nome, titulo) == 0)
+                {
+                    listarLivros(cat);
+                    break;
+                }
+                cat = cat->next;
+            }
+            if (cat == NULL)
+            {
+                printf("Categoria não encontrada!\n");
+            }
+            break;
+
+            inserirLivro(Categoria * categoria, Livro * novoLivro);
+        criarLivro(int codigo, char *titulo, char *autor, int ano)
+
+            // procurar um livro
+            case #:
+            printf("Introduza o título do livro a procurar: ");
             scanf("%s", titulo);
             cat = biblioteca.categorias;
             while (cat != NULL)
