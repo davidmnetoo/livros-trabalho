@@ -42,7 +42,7 @@ Book* createBook(int code, char title[], char author[], int year) {
 Category* createCategory(char name[]) {
     Category *newCategory = (Category*)malloc(sizeof(Category));
     if (newCategory == NULL) {
-        printf("Memory allocation failed!\n");
+        printf("Memoria foi com o caralho!\n");
         exit(1);
     }
     strcpy(newCategory->name, name);
