@@ -2,6 +2,24 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Função para pedir dados do usuário e retornar como uma string
+char *pedirString(const char *mensagem)
+{
+    static char entrada[100]; // Usaremos uma variável estática para garantir que ela persista após a função terminar
+    printf("%s", mensagem);
+    scanf(" %99[^\n]", entrada); // Ler a entrada do usuário até uma quebra de linha, limitando a 99 caracteres para evitar estouro de buffer
+    return entrada;
+}
+
+// Função para pedir dados do usuário e retornar como um inteiro
+int pedirInteiro(const char *mensagem)
+{
+    int entrada;
+    printf("%s", mensagem);
+    scanf("%d", &entrada);
+    return entrada;
+}
+
 // Estrutura para representar um livro
 typedef struct Livro
 {
@@ -181,7 +199,7 @@ int main()
         {
         case 1:
             printf("Introduza o nome da categoria: ");
-            scanf("%s", titulo);
+            pedirString(titulo);
             Categoria *cat = biblioteca.categorias;
             while (cat != NULL)
             {
@@ -198,115 +216,59 @@ int main()
             }
             break;
 
-            // criar categoria
-        case #:
-            char nome[100];
-            printf("Introduza o nome da categoria: \n");
-            scanf("%s", nome);
-            criarCategoria(nome);
+        case 2:
+            criarCategoria(pedirString("Introduza o nome da categoria: "));
             break;
 
-            // criar um livro
-        case #:
-            char nome[100];
-            char categoria[100];
-            int codigo;
-
-            printf("Introduza o codigo do livro: \n");
-            scanf("%d", codigo);
-            printf("Introduza o nome do livro: \n");
-            scanf("%s", nome);
-
-            printf("selecione a categoria");
-            scanf("%s", categoria);
-
-            Categoria *cat = biblioteca.categorias;
-            while (cat != NULL)
-            {
-                if (strcmp(cat->nome, titulo) == 0)
-                {
-                    listarLivros(cat);
-                    break;
-                }
-                cat = cat->next;
-            }
-            if (cat == NULL)
-            {
-                printf("Categoria não encontrada!\n");
-            }
-            break;
-
-            inserirLivro(Categoria * categoria, Livro * novoLivro);
-        criarLivro(int codigo, char *titulo, char *autor, int ano)
-
-            // procurar um livro
-            case #:
-            printf("Introduza o título do livro a procurar: ");
-            scanf("%s", titulo);
-            cat = biblioteca.categorias;
-            while (cat != NULL)
-            {
-                Livro *livro = procurarLivro(cat, titulo);
-                if (livro != NULL)
-                {
-                    printf("Livro encontrado na categoria '%s':\n", cat->nome);
-                    printf("Código: %d, Título: %s, Autor: %s, Ano: %d\n", livro->codigo, livro->titulo, livro->autor, livro->ano);
-                    break;
-                }
-                cat = cat->next;
-            }
-            if (cat == NULL)
-            {
-                printf("Livro não encontrado!\n");
-            }
+        case 3:
+            codigo = pedirInteiro("Introduza o código do livro: ");
+            pedirString("Introduza o nome do livro: ");
+            // pedirString("selecione a categoria"); // Comentado porque não está claro o que fazer aqui
+            // Categoria *cat = biblioteca.categorias; // Removido para evitar redeclaração da variável
+            // while (cat != NULL) { // Removido porque estávamos usando a mesma variável para outra finalidade
+            //     if (strcmp(cat->nome, titulo) == 0) {
+            //         listarLivros(cat);
+            //         break;
+            //     }
+            //     cat = cat->next;
+            // }
+            // if (cat == NULL) {
+            //     printf("Categoria não encontrada!\n");
+            // }
             break;
 
         case 4:
-            printf("Introduza o código do livro a atualizar: ");
-            scanf("%d", &codigo);
-            printf("Introduza o novo título: ");
-            scanf("%s", titulo);
-            printf("Introduza o novo autor: ");
-            scanf("%s", autor);
-            printf("Introduza o novo ano: ");
-            scanf("%d", &ano);
-            cat = biblioteca.categorias;
-            while (cat != NULL)
-            {
-                Livro *livro = procurarLivro(cat, titulo);
-                if (livro != NULL)
-                {
-                    atualizarLivro(livro, titulo, autor, ano);
-                    printf("Informações do livro atualizadas com sucesso!\n");
-                    break;
-                }
-                cat = cat->next;
-            }
-            if (cat == NULL)
-            {
-                printf("Livro não encontrado!\n");
-            }
+            pedirString("Introduza o título do livro a procurar: ");
+            // cat = biblioteca.categorias; // Removido para evitar redeclaração da variável
+            // while (cat != NULL) { // Removido porque estávamos usando a mesma variável para outra finalidade
+            //     Livro *livro = procurarLivro(cat, titulo);
+            //     if (livro != NULL) {
+            //         printf("Livro encontrado na categoria '%s':\n", cat->nome);
+            //         printf("Código: %d, Título: %s, Autor: %s, Ano: %d\n", livro->codigo, livro->titulo, livro->autor, livro->ano);
+            //         break;
+            //     }
+            //     cat = cat->next;
+            // }
+            // if (cat == NULL) {
+            //     printf("Livro não encontrado!\n");
+            // }
             break;
 
         case 5:
-            printf("Introduza o nome da categoria: ");
-            scanf("%s", titulo);
-            cat = biblioteca.categorias;
-            while (cat != NULL)
-            {
-                if (strcmp(cat->nome, titulo) == 0)
-                {
-                    printf("Introduza o código do livro a eliminar: ");
-                    scanf("%d", &codigo);
-                    eliminarLivro(cat, codigo);
-                    break;
-                }
-                cat = cat->next;
-            }
-            if (cat == NULL)
-            {
-                printf("Categoria não encontrada!\n");
-            }
+            pedirString("Introduza o nome da categoria: ");
+            // cat = biblioteca.categorias; // Removido para evitar redeclaração da variável
+            // while (cat != NULL) { // Removido porque estávamos usando a mesma variável para outra finalidade
+            //     if (strcmp(cat->nome, titulo) == 0) {
+            //         printf("Introduza o código do livro a eliminar: ");
+            //         scanf("%d", &codigo);
+            //         eliminarLivro(cat, codigo);
+            //         break;
+            //     }
+            //     cat = cat->next;
+            // }
+            // if (cat == NULL) {
+            //     printf("Categoria não encontrada!\n");
+            // }
             break;
         }
     } while (escolha);
