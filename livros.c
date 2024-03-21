@@ -146,7 +146,7 @@ int main() {
         printf("3. Update book information\n");
         printf("4. Delete a book\n");
       
-        printf("5. Exit\n");
+        printf("0. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -227,7 +227,7 @@ int main() {
                 }
                 break;
         }
-    } while (choice != 5);
+    } while (choice);
 
     return 0;
 }
