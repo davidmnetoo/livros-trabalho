@@ -142,6 +142,8 @@ int main() {
     do {
         printf("\nMenu:\n");
         printf("1. List books in a category\n");
+        printf("2. Criar categoria\n");
+        printf("3. Adicionar livro\n");
         printf("2. Search for a book\n");
         printf("3. Update book information\n");
         printf("4. Delete a book\n");
@@ -166,6 +168,12 @@ int main() {
                     printf("Category not found!\n");
                 }
                 break;
+
+            case 2:
+            char 
+            printf("Introduza o nome da categoria: \n");
+            scanf("%s", title);
+            createCategory();
 
             case 2:
                 printf("Enter book title to search: ");
