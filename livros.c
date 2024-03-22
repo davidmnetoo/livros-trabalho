@@ -117,7 +117,7 @@ int main()
             strcpy(autor, pedirString("Introduza o nome do autor: "));
             ano = pedirInteiro("Introduza o ano do livro: ");
             strcpy(categoria, pedirString("Introduza a categoria: "));
-            // aqui tem que ser melhorado para quando a categoria ja existe e quando é para criar a categoria
+            
             Categoria *categoriaLivro = verificaCategoria(biblioteca, categoria);
             if (categoriaLivro == NULL)
             {
