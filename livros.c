@@ -37,6 +37,11 @@ char *pedirString(const char *mensagem);
 int pedirInteiro(const char *mensagem);
 int gerarcodigolivro(void);
 int gerarcodigocat(void);
+Categoria *verificacategoriaporcodigo(Biblioteca biblioteca, int codigocat);
+void mostrarcategorias(Biblioteca biblioteca);
+
+int controlocodigolivro = 0;
+int controlocodigocat = 0;
 
 int main()
 {
@@ -107,26 +112,10 @@ int main()
             }
             else
             {
-                criarCategoria(titulo);
-                printf("Categoria criada com sucesso!\n");
-            }
-            break;
-
-        case 4:
-            strcpy(titulo, pedirString("Introduza o titulo do livro: "));
-            strcpy(autor, pedirString("Introduza o nome do autor: "));
-            ano = pedirInteiro("Introduza o ano do livro: ");
-            strcpy(categoria, pedirString("Introduza a categoria: "));
-            
-            Categoria *categoriaLivro = verificaCategoria(biblioteca, categoria);
-            if (categoriaLivro == NULL)
-            {
-                // A categoria não existe, então vamos criá-la
-                categoriaLivro = criarCategoria(categoria);
-                // Adicionar a nova categoria à lista de categorias
+                Categoria *novaCategoria = criarCategoria(titulo);
                 if (biblioteca.categorias == NULL)
                 {
-                    biblioteca.categorias = categoriaLivro;
+                    biblioteca.categorias = novaCategoria;
                 }
                 else
                 {
@@ -135,11 +124,35 @@ int main()
                     {
                         temp = temp->next;
                     }
-                    temp->next = categoriaLivro;
+                    temp->next = novaCategoria;
                 }
+                printf("Categoria criada com sucesso!\n");
             }
-            // Agora, inserir o livro na categoria correta
-            inserirLivro(categoriaLivro, criarLivro(titulo, autor, ano));
+            break;
+
+        case 4:
+            strcpy(titulo, pedirString("Introduza o titulo do livro: "));
+            strcpy(autor, pedirString("Introduza o nome do autor: "));
+            ano = pedirInteiro("Introduza o ano do livro: ");
+            mostrarcategorias(biblioteca);
+            int codigocat;
+
+            do
+            {
+                codigocat = pedirInteiro("Introduza o numero da sua categoria: ");
+
+            } while (codigocat < 1 || codigocat > controlocodigocat);
+
+            Categoria *categoriaLivro = verificacategoriaporcodigo(biblioteca, codigocat);;
+            if (categoriaLivro == NULL)
+            {
+                printf("A categoria não existe, deve ser criada antes de adicionar livros nela");
+            }
+            else
+            {
+                inserirLivro(categoriaLivro, criarLivro(titulo, autor, ano));
+                printf("livro criado com sucesso!\n");
+            }
 
             break;
 
@@ -175,6 +188,8 @@ int main()
                     strcpy(autor, pedirString("Introduza o novo autor: "));
                     ano = pedirInteiro("Introduza o novo ano: ");
                     atualizarLivro(livro, titulo, autor, ano);
+                    // tem que tambem ser possivel atualizar a categoria
+
                     printf("Informacoes do livro atualizadas com sucesso!\n");
                     break;
                 }
@@ -207,7 +222,8 @@ int main()
 
         case 0:
             printf("Encerrando o programa. Obrigado por usar a biblioteca!\n");
-            return 0;
+            break;
+
         default:
             printf("Opcao invalida. Por favor, escolha uma opcao valida.\n");
             break;
@@ -217,13 +233,11 @@ int main()
     return 0;
 }
 
-int controlocodigolivro = 0;
 int gerarcodigolivro(void)
 {
     return ++controlocodigolivro;
 }
 
-int controlocodigocat = 0;
 int gerarcodigocat(void)
 {
     return ++controlocodigocat;
@@ -250,10 +264,34 @@ void mostrarbiblioteca(Biblioteca biblioteca)
     Categoria *cat = biblioteca.categorias;
     while (cat != NULL)
     {
-        printf("Categoria: %s\n", cat->nome);
+        printf("\nCategoria: %s\n\n", cat->nome);
         listarLivros(cat);
         cat = cat->next;
     }
+}
+
+void mostrarcategorias(Biblioteca biblioteca)
+{
+    Categoria *cat = biblioteca.categorias;
+    while (cat != NULL)
+    {
+        printf("%i. Categoria: %s\n", cat->codigocat, cat->nome);
+        cat = cat->next;
+    }
+}
+
+Categoria *verificacategoriaporcodigo(Biblioteca biblioteca, int codigo)
+{
+    Categoria *cat = biblioteca.categorias;
+    while (cat != NULL)
+    {
+        if (cat->codigocat == codigo)
+        {
+            return cat;
+        }
+        cat = cat->next;
+    }
+    return NULL; // Retorna NULL se a categoria não for encontrada
 }
 
 Categoria *verificaCategoria(Biblioteca biblioteca, const char *nomeCategoria)
@@ -320,7 +358,6 @@ void inserirLivro(Categoria *categoria, Livro *novoLivro)
 
 void listarLivros(Categoria *categoria)
 {
-    printf("Livros na categoria '%s':\n", categoria->nome);
     Livro *temp = categoria->livros;
     while (temp != NULL)
     {
