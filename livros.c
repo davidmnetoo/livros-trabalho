@@ -178,6 +178,8 @@ int main()
             break;
 
         case 6:
+
+        //trocar isto para atualizar por codigo
             strcpy(titulo, pedirString("Introduza o titulo do livro a atualizar: "));
             cat = biblioteca.categorias;
             while (cat != NULL)
