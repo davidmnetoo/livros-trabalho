@@ -378,6 +378,9 @@ void listarLivros(Categoria *categoria)
         printf("Codigo: %d, Titulo: %s, Autor: %s, Ano: %d\n", temp->codigo, temp->titulo, temp->autor, temp->ano);
         temp = temp->prox;
     }
+    if (temp == NULL){
+        printf("Categoria sem livros\n");
+    }
 }
 
 Livro *procurarLivro(Categoria *categoria, char titulo[])
