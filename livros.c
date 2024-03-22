@@ -151,7 +151,7 @@ int main()
             else
             {
                 inserirLivro(categoriaLivro, criarLivro(titulo, autor, ano));
-                printf("livro creado com sucesso!\n");
+                printf("livro criado com sucesso!\n");
             }
 
             break;
