@@ -46,7 +46,7 @@ int main()
     biblioteca.categorias = NULL;
 
     Categoria *categoria1 = criarCategoria("Ficcao");
-    Categoria *categoria2 = criarCategoria("NaoFiccao");
+    Categoria *categoria2 = criarCategoria("Nao Ficcao");
 
     biblioteca.categorias = categoria1;
     categoria1->next = categoria2;
