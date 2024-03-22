@@ -31,8 +31,7 @@ typedef struct LivroArray
     int count;
 } LivroArray;
 
-LivroArray *buscarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo);
-
+LivroArray *procurarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo);
 void mostrarbiblioteca(Biblioteca biblioteca);
 Categoria *verificaCategoria(Biblioteca biblioteca, const char *nomeCategoria);
 Livro *criarLivro(char titulo[], char autor[], int ano);
@@ -168,7 +167,7 @@ int main()
 
         case 5:
             strcpy(titulo, pedirString("Introduza o titulo do livro a procurar: "));
-            LivroArray *livrosEncontrados = buscarLivrosPorTitulo(biblioteca, titulo);
+            LivroArray *livrosEncontrados = procurarLivrosPorTitulo(biblioteca, titulo);
             if (livrosEncontrados->count > 0)
             {
                 printf("Livros encontrados:\n");
@@ -428,7 +427,7 @@ void atualizarLivro(Livro *livro, char titulo[], char autor[], int ano)
     livro->ano = ano;
 }
 
-LivroArray *buscarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo)
+LivroArray *procurarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo)
 {
     LivroArray *result = (LivroArray *)malloc(sizeof(LivroArray));
     if (result == NULL)
