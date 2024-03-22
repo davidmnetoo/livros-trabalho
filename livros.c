@@ -204,6 +204,13 @@ int main()
                 printf("Categoria nao encontrada!\n");
             }
             break;
+
+        case 0:
+            printf("Encerrando o programa. Obrigado por usar a biblioteca!\n");
+            return 0;
+        default:
+            printf("Opcao invalida. Por favor, escolha uma opcao valida.\n");
+            break;
         }
     } while (escolha);
 
