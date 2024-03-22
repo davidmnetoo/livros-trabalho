@@ -38,8 +38,6 @@ int pedirInteiro(const char *mensagem);
 int gerarcodigolivro(void);
 int gerarcodigocat(void);
 
-
-
 int main()
 {
     Biblioteca biblioteca;
@@ -80,7 +78,8 @@ int main()
         switch (escolha)
         {
         case 1:
-        mostrarbiblioteca(biblioteca);
+            mostrarbiblioteca(biblioteca);
+            break;
         case 2:
             strcpy(titulo, pedirString("Introduza o nome da categoria: "));
             Categoria *cat = biblioteca.categorias;
@@ -239,17 +238,16 @@ int pedirInteiro(const char *mensagem)
     return entrada;
 }
 
-
-void mostrarbiblioteca(Biblioteca biblioteca) {
+void mostrarbiblioteca(Biblioteca biblioteca)
+{
     Categoria *cat = biblioteca.categorias;
-    while (cat != NULL) {
+    while (cat != NULL)
+    {
         printf("Categoria: %s\n", cat->nome);
         listarLivros(cat);
         cat = cat->next;
     }
 }
-
-
 
 Categoria *verificaCategoria(Biblioteca biblioteca, const char *nomeCategoria)
 {
