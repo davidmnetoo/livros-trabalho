@@ -151,7 +151,7 @@ int main()
             else
             {
                 inserirLivro(categoriaLivro, criarLivro(titulo, autor, ano));
-                printf("livro criado com sucesso!\n");
+                printf("livro creado com sucesso!\n");
             }
 
             break;
@@ -159,6 +159,7 @@ int main()
         case 5:
             strcpy(titulo, pedirString("Introduza o titulo do livro a procurar: "));
             cat = biblioteca.categorias;
+            //mofificar o ciclo para permitir devolver mais do que um livro
             while (cat != NULL)
             {
                 Livro *livro = procurarLivro(cat, titulo);
@@ -177,6 +178,8 @@ int main()
             break;
 
         case 6:
+
+        //trocar isto para atualizar por codigo
             strcpy(titulo, pedirString("Introduza o titulo do livro a atualizar: "));
             cat = biblioteca.categorias;
             while (cat != NULL)
