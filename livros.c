@@ -159,6 +159,7 @@ int main()
         case 5:
             strcpy(titulo, pedirString("Introduza o titulo do livro a procurar: "));
             cat = biblioteca.categorias;
+            //mofificar o ciclo para permitir devolver mais do que um livro
             while (cat != NULL)
             {
                 Livro *livro = procurarLivro(cat, titulo);
