@@ -133,7 +133,6 @@ int main()
         case 4:
             strcpy(titulo, pedirString("Introduza o titulo do livro: "));
             strcpy(autor, pedirString("Introduza o nome do autor: "));
-            ;
             ano = pedirInteiro("Introduza o ano do livro: ");
             mostrarcategorias(biblioteca);
             int codigocat;
@@ -144,8 +143,7 @@ int main()
 
             } while (codigocat < 1 || codigocat > controlocodigocat);
 
-            Categoria *categoriaLivro = verificacategoriaporcodigo(biblioteca, codigocat);
-            ;
+            Categoria *categoriaLivro = verificacategoriaporcodigo(biblioteca, codigocat);;
             if (categoriaLivro == NULL)
             {
                 printf("A categoria não existe, deve ser criada antes de adicionar livros nela");
