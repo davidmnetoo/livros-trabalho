@@ -2,34 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int controlocodigolivro = 0;
-int gerarcodigolivro(void)
-{
-    return ++controlocodigolivro;
-}
-
-int controlocodigocat = 0;
-int gerarcodigocat(void)
-{
-    return ++controlocodigocat;
-}
-
-char *pedirString(const char *mensagem)
-{
-    static char entrada[100];
-    printf("%s", mensagem);
-    scanf(" %s", entrada);
-    return entrada;
-}
-
-int pedirInteiro(const char *mensagem)
-{
-    int entrada;
-    printf("%s", mensagem);
-    scanf("%d", &entrada);
-    return entrada;
-}
-
 typedef struct Livro
 {
     int codigo;
@@ -52,136 +24,21 @@ typedef struct Biblioteca
     Categoria *categorias;
 } Biblioteca;
 
-void mostrarbiblioteca(Biblioteca biblioteca) {
-    Categoria *cat = biblioteca.categorias;
-    while (cat != NULL) {
-        printf("Categoria: %s\n", cat->nome);
-        listarLivros(cat);
-        cat = cat->next;
-    }
-}
+void mostrarbiblioteca(Biblioteca biblioteca);
+Categoria *verificaCategoria(Biblioteca biblioteca, const char *nomeCategoria);
+Livro *criarLivro(char titulo[], char autor[], int ano);
+Categoria *criarCategoria(char nome[]);
+void inserirLivro(Categoria *categoria, Livro *novoLivro);
+void listarLivros(Categoria *categoria);
+Livro *procurarLivro(Categoria *categoria, char titulo[]);
+void eliminarLivro(Categoria *categoria, int codigo);
+void atualizarLivro(Livro *livro, char titulo[], char autor[], int ano);
+char *pedirString(const char *mensagem);
+int pedirInteiro(const char *mensagem);
+int gerarcodigolivro(void);
+int gerarcodigocat(void);
 
 
-
-Categoria *verificaCategoria(Biblioteca biblioteca, const char *nomeCategoria)
-{
-    Categoria *cat = biblioteca.categorias;
-    while (cat != NULL)
-    {
-        if (strcmp(cat->nome, nomeCategoria) == 0)
-        {
-            return cat; // Categoria encontrada
-        }
-        cat = cat->next;
-    }
-    return NULL; // Categoria não encontrada
-}
-
-Livro *criarLivro(char titulo[], char autor[], int ano)
-{
-    Livro *novoLivro = (Livro *)malloc(sizeof(Livro));
-    if (novoLivro == NULL)
-    {
-        printf("Alocacao de memoria falhou!\n");
-        exit(1);
-    }
-    novoLivro->codigo = gerarcodigolivro();
-    strcpy(novoLivro->titulo, titulo);
-    strcpy(novoLivro->autor, autor);
-    novoLivro->ano = ano;
-    novoLivro->next = NULL;
-    return novoLivro;
-}
-
-Categoria *criarCategoria(char nome[])
-{
-    Categoria *novaCategoria = (Categoria *)malloc(sizeof(Categoria));
-    if (novaCategoria == NULL)
-    {
-        printf("Alocacao de memoria falhou!\n");
-        exit(1);
-    }
-    strcpy(novaCategoria->nome, nome);
-    novaCategoria->codigocat = gerarcodigocat();
-    novaCategoria->livros = NULL;
-    novaCategoria->next = NULL;
-    return novaCategoria;
-}
-
-void inserirLivro(Categoria *categoria, Livro *novoLivro)
-{
-    if (categoria->livros == NULL)
-    {
-        categoria->livros = novoLivro;
-    }
-    else
-    {
-        Livro *temp = categoria->livros;
-        while (temp->next != NULL)
-        {
-            temp = temp->next;
-        }
-        temp->next = novoLivro;
-    }
-}
-
-void listarLivros(Categoria *categoria)
-{
-    printf("Livros na categoria '%s':\n", categoria->nome);
-    Livro *temp = categoria->livros;
-    while (temp != NULL)
-    {
-        printf("Codigo: %d, Titulo: %s, Autor: %s, Ano: %d\n", temp->codigo, temp->titulo, temp->autor, temp->ano);
-        temp = temp->next;
-    }
-}
-
-Livro *procurarLivro(Categoria *categoria, char titulo[])
-{
-    Livro *temp = categoria->livros;
-    while (temp != NULL)
-    {
-        if (strcmp(temp->titulo, titulo) == 0)
-        {
-            return temp;
-        }
-        temp = temp->next;
-    }
-    return NULL;
-}
-
-void eliminarLivro(Categoria *categoria, int codigo)
-{
-    Livro *temp = categoria->livros;
-    Livro *prev = NULL;
-    while (temp != NULL && temp->codigo != codigo)
-    {
-        prev = temp;
-        temp = temp->next;
-    }
-    if (temp == NULL)
-    {
-        printf("Livro nao encontrado!\n");
-        return;
-    }
-    if (prev == NULL)
-    {
-        categoria->livros = temp->next;
-    }
-    else
-    {
-        prev->next = temp->next;
-    }
-    free(temp);
-    printf("Livro com codigo %d eliminado com sucesso!\n", codigo);
-}
-
-void atualizarLivro(Livro *livro, char titulo[], char autor[], int ano)
-{
-    strcpy(livro->titulo, titulo);
-    strcpy(livro->autor, autor);
-    livro->ano = ano;
-}
 
 int main()
 {
@@ -352,4 +209,164 @@ int main()
     } while (escolha);
 
     return 0;
+}
+
+int controlocodigolivro = 0;
+int gerarcodigolivro(void)
+{
+    return ++controlocodigolivro;
+}
+
+int controlocodigocat = 0;
+int gerarcodigocat(void)
+{
+    return ++controlocodigocat;
+}
+
+char *pedirString(const char *mensagem)
+{
+    static char entrada[100];
+    printf("%s", mensagem);
+    scanf(" %s", entrada);
+    return entrada;
+}
+
+int pedirInteiro(const char *mensagem)
+{
+    int entrada;
+    printf("%s", mensagem);
+    scanf("%d", &entrada);
+    return entrada;
+}
+
+
+void mostrarbiblioteca(Biblioteca biblioteca) {
+    Categoria *cat = biblioteca.categorias;
+    while (cat != NULL) {
+        printf("Categoria: %s\n", cat->nome);
+        listarLivros(cat);
+        cat = cat->next;
+    }
+}
+
+
+
+Categoria *verificaCategoria(Biblioteca biblioteca, const char *nomeCategoria)
+{
+    Categoria *cat = biblioteca.categorias;
+    while (cat != NULL)
+    {
+        if (strcmp(cat->nome, nomeCategoria) == 0)
+        {
+            return cat; // Categoria encontrada
+        }
+        cat = cat->next;
+    }
+    return NULL; // Categoria não encontrada
+}
+
+Categoria *criarCategoria(char nome[])
+{
+    Categoria *novaCategoria = (Categoria *)malloc(sizeof(Categoria));
+    if (novaCategoria == NULL)
+    {
+        printf("Alocacao de memoria falhou!\n");
+        exit(1);
+    }
+    strcpy(novaCategoria->nome, nome);
+    novaCategoria->codigocat = gerarcodigocat();
+    novaCategoria->livros = NULL;
+    novaCategoria->next = NULL;
+    return novaCategoria;
+}
+
+Livro *criarLivro(char titulo[], char autor[], int ano)
+{
+    Livro *novoLivro = (Livro *)malloc(sizeof(Livro));
+    if (novoLivro == NULL)
+    {
+        printf("Alocacao de memoria falhou!\n");
+        exit(1);
+    }
+    novoLivro->codigo = gerarcodigolivro();
+    strcpy(novoLivro->titulo, titulo);
+    strcpy(novoLivro->autor, autor);
+    novoLivro->ano = ano;
+    novoLivro->next = NULL;
+    return novoLivro;
+}
+
+void inserirLivro(Categoria *categoria, Livro *novoLivro)
+{
+    if (categoria->livros == NULL)
+    {
+        categoria->livros = novoLivro;
+    }
+    else
+    {
+        Livro *temp = categoria->livros;
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = novoLivro;
+    }
+}
+
+void listarLivros(Categoria *categoria)
+{
+    printf("Livros na categoria '%s':\n", categoria->nome);
+    Livro *temp = categoria->livros;
+    while (temp != NULL)
+    {
+        printf("Codigo: %d, Titulo: %s, Autor: %s, Ano: %d\n", temp->codigo, temp->titulo, temp->autor, temp->ano);
+        temp = temp->next;
+    }
+}
+
+Livro *procurarLivro(Categoria *categoria, char titulo[])
+{
+    Livro *temp = categoria->livros;
+    while (temp != NULL)
+    {
+        if (strcmp(temp->titulo, titulo) == 0)
+        {
+            return temp;
+        }
+        temp = temp->next;
+    }
+    return NULL;
+}
+
+void eliminarLivro(Categoria *categoria, int codigo)
+{
+    Livro *temp = categoria->livros;
+    Livro *prev = NULL;
+    while (temp != NULL && temp->codigo != codigo)
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL)
+    {
+        printf("Livro nao encontrado!\n");
+        return;
+    }
+    if (prev == NULL)
+    {
+        categoria->livros = temp->next;
+    }
+    else
+    {
+        prev->next = temp->next;
+    }
+    free(temp);
+    printf("Livro com codigo %d eliminado com sucesso!\n", codigo);
+}
+
+void atualizarLivro(Livro *livro, char titulo[], char autor[], int ano)
+{
+    strcpy(livro->titulo, titulo);
+    strcpy(livro->autor, autor);
+    livro->ano = ano;
 }
