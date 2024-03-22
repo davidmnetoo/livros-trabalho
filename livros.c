@@ -24,6 +24,15 @@ typedef struct Biblioteca
     Categoria *categorias;
 } Biblioteca;
 
+typedef struct LivroArray
+{
+    Livro **livros;
+    char **categorias;
+    int count;
+} LivroArray;
+
+LivroArray *buscarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo);
+
 void mostrarbiblioteca(Biblioteca biblioteca);
 Categoria *verificaCategoria(Biblioteca biblioteca, const char *nomeCategoria);
 Livro *criarLivro(char titulo[], char autor[], int ano);
@@ -143,7 +152,8 @@ int main()
 
             } while (codigocat < 1 || codigocat > controlocodigocat);
 
-            Categoria *categoriaLivro = verificacategoriaporcodigo(biblioteca, codigocat);;
+            Categoria *categoriaLivro = verificacategoriaporcodigo(biblioteca, codigocat);
+            ;
             if (categoriaLivro == NULL)
             {
                 printf("A categoria não existe, deve ser criada antes de adicionar livros nela");
@@ -158,28 +168,30 @@ int main()
 
         case 5:
             strcpy(titulo, pedirString("Introduza o titulo do livro a procurar: "));
-            cat = biblioteca.categorias;
-            //mofificar o ciclo para permitir devolver mais do que um livro
-            while (cat != NULL)
+            LivroArray *livrosEncontrados = buscarLivrosPorTitulo(biblioteca, titulo);
+            if (livrosEncontrados->count > 0)
             {
-                Livro *livro = procurarLivro(cat, titulo);
-                if (livro != NULL)
+                printf("Livros encontrados:\n");
+                for (int i = 0; i < livrosEncontrados->count; i++)
                 {
-                    printf("Livro encontrado na categoria '%s':\n", cat->nome);
-                    printf("Codigo: %d, Titulo: %s, Autor: %s, Ano: %d\n", livro->codigo, livro->titulo, livro->autor, livro->ano);
-                    break;
+                    Livro *livro = livrosEncontrados->livros[i];
+                    char *categoriaNome = livrosEncontrados->categorias[i];
+                    printf("Categoria: %s, Titulo: %s, Autor: %s, Ano: %d\n", categoriaNome, livro->titulo, livro->autor, livro->ano);
+                    free(categoriaNome); // Free the duplicated category name
                 }
-                cat = cat->prox;
             }
-            if (cat == NULL)
+            else
             {
-                printf("Livro nao encontrado!\n");
+                printf("Nenhum livro encontrado com o titulo '%s'.\n", titulo);
             }
+            free(livrosEncontrados->livros);
+            free(livrosEncontrados->categorias);
+            free(livrosEncontrados);
             break;
-
+            break;
         case 6:
 
-        //trocar isto para atualizar por codigo
+            // trocar isto para atualizar por codigo
             strcpy(titulo, pedirString("Introduza o titulo do livro a atualizar: "));
             cat = biblioteca.categorias;
             while (cat != NULL)
@@ -414,4 +426,45 @@ void atualizarLivro(Livro *livro, char titulo[], char autor[], int ano)
     strcpy(livro->titulo, titulo);
     strcpy(livro->autor, autor);
     livro->ano = ano;
+}
+
+LivroArray *buscarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo)
+{
+    LivroArray *result = (LivroArray *)malloc(sizeof(LivroArray));
+    if (result == NULL)
+    {
+        printf("Erro de alocação de memória.\n");
+        exit(EXIT_FAILURE);
+    }
+    result->livros = NULL;
+    result->categorias = NULL;
+    result->count = 0;
+
+    Categoria *cat = biblioteca.categorias;
+    while (cat != NULL)
+    {
+        Livro *livro = cat->livros;
+        while (livro != NULL)
+        {
+            if (strcmp(livro->titulo, titulo) == 0)
+            {
+                // Increase the size of the arrays
+                result->livros = realloc(result->livros, (result->count + 1) * sizeof(Livro *));
+                result->categorias = realloc(result->categorias, (result->count + 1) * sizeof(char *));
+                if (result->livros == NULL || result->categorias == NULL)
+                {
+                    printf("Erro de alocação de memória.\n");
+                    exit(EXIT_FAILURE);
+                }
+                // Store the matching book pointer and its category name
+                result->livros[result->count] = livro;
+                result->categorias[result->count] = strdup(cat->nome);
+                result->count++;
+            }
+            livro = livro->prox;
+        }
+        cat = cat->prox;
+    }
+
+    return result;
 }
