@@ -8,7 +8,7 @@ typedef struct Livro
     char titulo[100];
     char autor[100];
     int ano;
-    struct Livro *next;
+    struct Livro *prox;
 } Livro;
 
 typedef struct Categoria
@@ -16,7 +16,7 @@ typedef struct Categoria
     int codigocat;
     char nome[100];
     Livro *livros;
-    struct Categoria *next;
+    struct Categoria *prox;
 } Categoria;
 
 typedef struct Biblioteca
@@ -52,7 +52,7 @@ int main()
     Categoria *categoria2 = criarCategoria("Nao Ficcao");
 
     biblioteca.categorias = categoria1;
-    categoria1->next = categoria2;
+    categoria1->prox = categoria2;
 
     inserirLivro(categoria1, criarLivro("Harry Potter", "J.K. Rowling", 1997));
     inserirLivro(categoria1, criarLivro("Senhor dos Aneis", "J.R.R. Tolkien", 1954));
@@ -95,7 +95,7 @@ int main()
                     listarLivros(cat);
                     break;
                 }
-                cat = cat->next;
+                cat = cat->prox;
             }
             if (cat == NULL)
             {
@@ -120,11 +120,11 @@ int main()
                 else
                 {
                     Categoria *temp = biblioteca.categorias;
-                    while (temp->next != NULL)
+                    while (temp->prox != NULL)
                     {
-                        temp = temp->next;
+                        temp = temp->prox;
                     }
-                    temp->next = novaCategoria;
+                    temp->prox = novaCategoria;
                 }
                 printf("Categoria criada com sucesso!\n");
             }
@@ -169,7 +169,7 @@ int main()
                     printf("Codigo: %d, Titulo: %s, Autor: %s, Ano: %d\n", livro->codigo, livro->titulo, livro->autor, livro->ano);
                     break;
                 }
-                cat = cat->next;
+                cat = cat->prox;
             }
             if (cat == NULL)
             {
@@ -196,7 +196,7 @@ int main()
                     printf("Informacoes do livro atualizadas com sucesso!\n");
                     break;
                 }
-                cat = cat->next;
+                cat = cat->prox;
             }
             if (cat == NULL)
             {
@@ -215,7 +215,7 @@ int main()
                     eliminarLivro(cat, codigo);
                     break;
                 }
-                cat = cat->next;
+                cat = cat->prox;
             }
             if (cat == NULL)
             {
@@ -269,7 +269,7 @@ void mostrarbiblioteca(Biblioteca biblioteca)
     {
         printf("\nCategoria: %s\n\n", cat->nome);
         listarLivros(cat);
-        cat = cat->next;
+        cat = cat->prox;
     }
 }
 
@@ -279,7 +279,7 @@ void mostrarcategorias(Biblioteca biblioteca)
     while (cat != NULL)
     {
         printf("%i. Categoria: %s\n", cat->codigocat, cat->nome);
-        cat = cat->next;
+        cat = cat->prox;
     }
 }
 
@@ -292,7 +292,7 @@ Categoria *verificacategoriaporcodigo(Biblioteca biblioteca, int codigo)
         {
             return cat;
         }
-        cat = cat->next;
+        cat = cat->prox;
     }
     return NULL; // Retorna NULL se a categoria não for encontrada
 }
@@ -306,7 +306,7 @@ Categoria *verificaCategoria(Biblioteca biblioteca, const char *nomeCategoria)
         {
             return cat; // Categoria encontrada
         }
-        cat = cat->next;
+        cat = cat->prox;
     }
     return NULL; // Categoria não encontrada
 }
@@ -322,7 +322,7 @@ Categoria *criarCategoria(char nome[])
     strcpy(novaCategoria->nome, nome);
     novaCategoria->codigocat = gerarcodigocat();
     novaCategoria->livros = NULL;
-    novaCategoria->next = NULL;
+    novaCategoria->prox = NULL;
     return novaCategoria;
 }
 
@@ -338,7 +338,7 @@ Livro *criarLivro(char titulo[], char autor[], int ano)
     strcpy(novoLivro->titulo, titulo);
     strcpy(novoLivro->autor, autor);
     novoLivro->ano = ano;
-    novoLivro->next = NULL;
+    novoLivro->prox = NULL;
     return novoLivro;
 }
 
@@ -351,11 +351,11 @@ void inserirLivro(Categoria *categoria, Livro *novoLivro)
     else
     {
         Livro *temp = categoria->livros;
-        while (temp->next != NULL)
+        while (temp->prox != NULL)
         {
-            temp = temp->next;
+            temp = temp->prox;
         }
-        temp->next = novoLivro;
+        temp->prox = novoLivro;
     }
 }
 
@@ -365,7 +365,7 @@ void listarLivros(Categoria *categoria)
     while (temp != NULL)
     {
         printf("Codigo: %d, Titulo: %s, Autor: %s, Ano: %d\n", temp->codigo, temp->titulo, temp->autor, temp->ano);
-        temp = temp->next;
+        temp = temp->prox;
     }
 }
 
@@ -378,7 +378,7 @@ Livro *procurarLivro(Categoria *categoria, char titulo[])
         {
             return temp;
         }
-        temp = temp->next;
+        temp = temp->prox;
     }
     return NULL;
 }
@@ -390,7 +390,7 @@ void eliminarLivro(Categoria *categoria, int codigo)
     while (temp != NULL && temp->codigo != codigo)
     {
         prev = temp;
-        temp = temp->next;
+        temp = temp->prox;
     }
     if (temp == NULL)
     {
@@ -399,11 +399,11 @@ void eliminarLivro(Categoria *categoria, int codigo)
     }
     if (prev == NULL)
     {
-        categoria->livros = temp->next;
+        categoria->livros = temp->prox;
     }
     else
     {
-        prev->next = temp->next;
+        prev->prox = temp->prox;
     }
     free(temp);
     printf("Livro com codigo %d eliminado com sucesso!\n", codigo);
