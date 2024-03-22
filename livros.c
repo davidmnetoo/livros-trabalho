@@ -52,6 +52,31 @@ typedef struct Biblioteca
     Categoria *categorias;
 } Biblioteca;
 
+void mostrarbiblioteca(Biblioteca biblioteca) {
+    Categoria *cat = biblioteca.categorias;
+    while (cat != NULL) {
+        printf("Categoria: %s\n", cat->nome);
+        listarLivros(cat);
+        cat = cat->next;
+    }
+}
+
+
+
+Categoria *verificaCategoria(Biblioteca biblioteca, const char *nomeCategoria)
+{
+    Categoria *cat = biblioteca.categorias;
+    while (cat != NULL)
+    {
+        if (strcmp(cat->nome, nomeCategoria) == 0)
+        {
+            return cat; // Categoria encontrada
+        }
+        cat = cat->next;
+    }
+    return NULL; // Categoria não encontrada
+}
+
 Livro *criarLivro(char titulo[], char autor[], int ano)
 {
     Livro *novoLivro = (Livro *)malloc(sizeof(Livro));
@@ -184,12 +209,13 @@ int main()
 
     {
         printf("\nMenu:\n");
-        printf("1. Listar livros numa categoria\n");
-        printf("2. Criar categoria\n");
-        printf("3. Adicionar livro\n");
-        printf("4. Procurar um livro\n");
-        printf("5. Atualizar informacoes de um livro\n");
-        printf("6. Eliminar um livro\n");
+        printf("1. Mostrar biblioteca\n");
+        printf("2. Listar livros numa categoria\n");
+        printf("3. Criar categoria\n");
+        printf("4. Adicionar livro\n");
+        printf("5. Procurar um livro por titulo\n");
+        printf("6. Atualizar informacoes de um livro\n");
+        printf("7. Eliminar um livro\n");
         printf("0. Sair\n");
         printf("Escolha: ");
         scanf("%d", &escolha);
@@ -197,6 +223,8 @@ int main()
         switch (escolha)
         {
         case 1:
+        mostrarbiblioteca(biblioteca);
+        case 2:
             strcpy(titulo, pedirString("Introduza o nome da categoria: "));
             Categoria *cat = biblioteca.categorias;
             while (cat != NULL)
@@ -214,20 +242,52 @@ int main()
             }
             break;
 
-        case 2:
+        case 3:
             strcpy(titulo, pedirString("Introduza o nome da categoria: "));
-            criarCategoria(titulo);
+            Categoria *categoriaExistente = verificaCategoria(biblioteca, titulo);
+            if (categoriaExistente != NULL)
+            {
+                printf("Categoria já existe!\n");
+            }
+            else
+            {
+                criarCategoria(titulo);
+                printf("Categoria criada com sucesso!\n");
+            }
             break;
 
-        case 3:
+        case 4:
             strcpy(titulo, pedirString("Introduza o titulo do livro: "));
             strcpy(autor, pedirString("Introduza o nome do autor: "));
             ano = pedirInteiro("Introduza o ano do livro: ");
             strcpy(categoria, pedirString("Introduza a categoria: "));
-            inserirLivro(criarCategoria(categoria), criarLivro(titulo, autor, ano));
+            // aqui tem que ser melhorado para quando a categoria ja existe e quando é para criar a categoria
+            Categoria *categoriaLivro = verificaCategoria(biblioteca, categoria);
+            if (categoriaLivro == NULL)
+            {
+                // A categoria não existe, então vamos criá-la
+                categoriaLivro = criarCategoria(categoria);
+                // Adicionar a nova categoria à lista de categorias
+                if (biblioteca.categorias == NULL)
+                {
+                    biblioteca.categorias = categoriaLivro;
+                }
+                else
+                {
+                    Categoria *temp = biblioteca.categorias;
+                    while (temp->next != NULL)
+                    {
+                        temp = temp->next;
+                    }
+                    temp->next = categoriaLivro;
+                }
+            }
+            // Agora, inserir o livro na categoria correta
+            inserirLivro(categoriaLivro, criarLivro(titulo, autor, ano));
+
             break;
 
-        case 4:
+        case 5:
             strcpy(titulo, pedirString("Introduza o titulo do livro a procurar: "));
             cat = biblioteca.categorias;
             while (cat != NULL)
@@ -247,7 +307,7 @@ int main()
             }
             break;
 
-        case 5:
+        case 6:
             strcpy(titulo, pedirString("Introduza o titulo do livro a atualizar: "));
             cat = biblioteca.categorias;
             while (cat != NULL)
@@ -270,7 +330,7 @@ int main()
             }
             break;
 
-        case 6:
+        case 7:
             strcpy(titulo, pedirString("Introduza o nome da categoria: "));
             cat = biblioteca.categorias;
             while (cat != NULL)
