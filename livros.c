@@ -76,17 +76,9 @@ int main()
     do
 
     {
-        printf("\nMenu:\n");
-        printf("1. Mostrar biblioteca\n");
-        printf("2. Listar livros numa categoria\n");
-        printf("3. Criar categoria\n");
-        printf("4. Adicionar livro\n");
-        printf("5. Procurar um livro por titulo\n");
-        printf("6. Atualizar informacoes de um livro\n");
-        printf("7. Eliminar um livro\n");
-        printf("0. Sair\n");
-        printf("Escolha: ");
-        scanf("%d", &escolha);
+
+        escolha = pedirInteiro("\nMenu:\n1. Mostrar biblioteca\n2. Listar livros numa categoria\n3. Criar categoria\n4. Adicionar livro\n5. Procurar um livro por titulo\n6. Atualizar informacoes de um livro\n7. Eliminar um livro\n0. Sair\nEscolha: ");
+        
 
         switch (escolha)
         {
@@ -260,16 +252,29 @@ int gerarcodigocat(void)
 char *pedirString(const char *mensagem)
 {
     static char entrada[100];
+
+
     printf("%s", mensagem);
-    scanf(" %s", entrada);
+
+    scanf("%[^\n]", entrada);
+    while(getchar() != '\n');
+
+
+    
     return entrada;
+
+
 }
+
+
+
 
 int pedirInteiro(const char *mensagem)
 {
     int entrada;
     printf("%s", mensagem);
     scanf("%d", &entrada);
+    while(getchar() != '\n');
     return entrada;
 }
 
@@ -278,7 +283,9 @@ void mostrarbiblioteca(Biblioteca biblioteca)
     Categoria *cat = biblioteca.categorias;
     while (cat != NULL)
     {
+        
         printf("\nCategoria: %s\n\n", cat->nome);
+
         listarLivros(cat);
         cat = cat->prox;
     }
@@ -372,14 +379,17 @@ void inserirLivro(Categoria *categoria, Livro *novoLivro)
 
 void listarLivros(Categoria *categoria)
 {
+    if (categoria->livros == NULL)
+    {
+        printf("Categoria sem livros\n");
+        return; // Retorna se não houver livros na categoria
+    }
+
     Livro *temp = categoria->livros;
     while (temp != NULL)
     {
         printf("Codigo: %d, Titulo: %s, Autor: %s, Ano: %d\n", temp->codigo, temp->titulo, temp->autor, temp->ano);
         temp = temp->prox;
-    }
-    if (temp == NULL){
-        printf("Categoria sem livros\n");
     }
 }
 
