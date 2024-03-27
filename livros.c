@@ -146,7 +146,8 @@ int main()
 
             } while (codigocat < 1 || codigocat > controlocodigocat);
 
-            categoriaLivro = verificacategoriaporcodigo(biblioteca, codigocat);;
+            categoriaLivro = verificacategoriaporcodigo(biblioteca, codigocat);
+            ;
             if (categoriaLivro == NULL)
             {
                 printf("A categoria não existe, deve ser criada antes de adicionar livros nela");
@@ -223,21 +224,24 @@ int main()
             break;
 
         case 7:
-            strcpy(titulo, pedirString("Introduza o nome da categoria: "));
+
+            do
+            {
+                codigo = pedirInteiro("Introduza o codigo do livro a eliminar: ");
+            } while (codigo <= 0 || codigo > controlocodigolivro);
+
             cat = biblioteca.categorias;
+
             while (cat != NULL)
             {
-                if (strcmp(cat->nome, titulo) == 0)
+                Livro *livro = procurarLivro(cat, codigo);
+                if (livro != NULL)
                 {
-                    codigo = pedirInteiro("Introduza o codigo do livro a eliminar: ");
                     eliminarLivro(cat, codigo);
+                    printf("livro %d eliminado com sucesso!\n", codigo);
                     break;
                 }
                 cat = cat->prox;
-            }
-            if (cat == NULL)
-            {
-                printf("Categoria nao encontrada!\n");
             }
             break;
 
@@ -427,7 +431,7 @@ void eliminarLivro(Categoria *categoria, int codigo)
     }
     if (temp == NULL)
     {
-        printf("Livro nao encontrado!\n");
+        // printf("Livro nao encontrado!\n");
         return;
     }
     if (prev == NULL)
@@ -439,7 +443,7 @@ void eliminarLivro(Categoria *categoria, int codigo)
         prev->prox = temp->prox;
     }
     free(temp);
-    printf("Livro com codigo %d eliminado com sucesso!\n", codigo);
+    // printf("Livro com codigo %d eliminado com sucesso!\n", codigo);
 }
 
 void atualizarLivro(Livro *livro, char titulo[], char autor[], int ano, Categoria *novaCategoria, Biblioteca biblioteca)
