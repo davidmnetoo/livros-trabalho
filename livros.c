@@ -41,7 +41,6 @@ void listarLivros(Categoria *categoria);
 Livro *procurarLivro(Categoria *categoria, int codigo);
 void eliminarLivro(Categoria *categoria, int codigo);
 void atualizarLivro(Livro *livro, char titulo[], char autor[], int ano, Categoria *novaCategoria, Biblioteca biblioteca);
-
 char *pedirString(const char *mensagem);
 int pedirInteiro(const char *mensagem);
 int gerarcodigolivro(void);
