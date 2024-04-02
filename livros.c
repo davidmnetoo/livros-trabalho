@@ -176,21 +176,20 @@ int main()
                 char sortChoice;
                 do
                 {
-                    sortChoice = pedirString("Deseja ordenar os resultados por ano? (S/N)")[0];
+                    sortChoice = pedirString("Deseja ordenar os resultados por ano? (S/N) ")[0];
                 } while (sortChoice != 'n' && sortChoice != 'N' && sortChoice != 's' && sortChoice != 'S');
 
                 if (sortChoice == 'S' || sortChoice == 's')
                 {
                     // Sort the books by year using merge sort
                     mergeSort(livrosEncontrados, 0, livrosEncontrados->count - 1);
-                }
-
-                for (int i = 0; i < livrosEncontrados->count; i++)
-                {
-                    Livro *livro = livrosEncontrados->livros[i];
-                    char *categoriaNome = livrosEncontrados->categorias[i];
-                    printf("Categoria: %s, Titulo: %s, Autor: %s, Ano: %d\n", categoriaNome, livro->titulo, livro->autor, livro->ano);
-                    free(categoriaNome); // Free the duplicated category name
+                    for (int i = 0; i < livrosEncontrados->count; i++)
+                    {
+                        Livro *livro = livrosEncontrados->livros[i];
+                        char *categoriaNome = livrosEncontrados->categorias[i];
+                        printf("Categoria: %s, Titulo: %s, Autor: %s, Ano: %d\n", categoriaNome, livro->titulo, livro->autor, livro->ano);
+                        free(categoriaNome); // Free the duplicated category name
+                    }
                 }
             }
             else
