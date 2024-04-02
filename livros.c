@@ -170,6 +170,24 @@ int main()
                     Livro *livro = livrosEncontrados->livros[i];
                     char *categoriaNome = livrosEncontrados->categorias[i];
                     printf("Categoria: %s, Titulo: %s, Autor: %s, Ano: %d\n", categoriaNome, livro->titulo, livro->autor, livro->ano);
+                }
+                char sortChoice;
+                do
+                {
+                    sortChoice = pedirString("Deseja ordenar os resultados por ano? (S/N)")[0];
+                } while (sortChoice != 'n' && sortChoice != 'N' && sortChoice != 's' && sortChoice != 'S');
+
+                if (sortChoice == 'S' || sortChoice == 's')
+                {
+                    // Sort the books by year using merge sort
+                    mergeSort(livrosEncontrados, 0, livrosEncontrados->count - 1);
+                }
+
+                for (int i = 0; i < livrosEncontrados->count; i++)
+                {
+                    Livro *livro = livrosEncontrados->livros[i];
+                    char *categoriaNome = livrosEncontrados->categorias[i];
+                    printf("Categoria: %s, Titulo: %s, Autor: %s, Ano: %d\n", categoriaNome, livro->titulo, livro->autor, livro->ano);
                     free(categoriaNome); // Free the duplicated category name
                 }
             }
@@ -177,10 +195,9 @@ int main()
             {
                 printf("Nenhum livro encontrado com o titulo '%s'.\n", titulo);
             }
-
             free(livrosEncontrados);
-
             break;
+
         case 6:
             do
             {
@@ -537,4 +554,82 @@ LivroArray *procurarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo)
     }
 
     return result;
+}
+
+// Função para mesclar dois subarrays de livros em ordem crescente de ano de publicação
+void merge(LivroArray *livros, int esquerda, int meio, int direita)
+{
+    int indiceEsquerda = 0, indiceDireita = 0, indiceMerged = esquerda;
+    int tamanhoEsquerda = meio - esquerda + 1;
+    int tamanhoDireita = direita - meio;
+
+    // Arrays temporários para armazenar os subarrays esquerdo e direito
+    Livro *subArrayEsquerdo[tamanhoEsquerda];
+    Livro *subArrayDireito[tamanhoDireita];
+    char *categoriasEsquerda[tamanhoEsquerda];
+    char *categoriasDireita[tamanhoDireita];
+
+    // Copiar dados para os arrays temporários
+    for (int i = 0; i < tamanhoEsquerda; i++)
+    {
+        subArrayEsquerdo[i] = livros->livros[esquerda + i];
+        categoriasEsquerda[i] = livros->categorias[esquerda + i];
+    }
+    for (int j = 0; j < tamanhoDireita; j++)
+    {
+        subArrayDireito[j] = livros->livros[meio + 1 + j];
+        categoriasDireita[j] = livros->categorias[meio + 1 + j];
+    }
+
+    // Mesclar os arrays temporários de volta para livros
+    while (indiceEsquerda < tamanhoEsquerda && indiceDireita < tamanhoDireita)
+    {
+        if (subArrayEsquerdo[indiceEsquerda]->ano <= subArrayDireito[indiceDireita]->ano)
+        {
+            livros->livros[indiceMerged] = subArrayEsquerdo[indiceEsquerda];
+            livros->categorias[indiceMerged] = categoriasEsquerda[indiceEsquerda];
+            indiceEsquerda++;
+        }
+        else
+        {
+            livros->livros[indiceMerged] = subArrayDireito[indiceDireita];
+            livros->categorias[indiceMerged] = categoriasDireita[indiceDireita];
+            indiceDireita++;
+        }
+        indiceMerged++;
+    }
+
+    // Copiar os elementos restantes do subarray esquerdo, se houver
+    while (indiceEsquerda < tamanhoEsquerda)
+    {
+        livros->livros[indiceMerged] = subArrayEsquerdo[indiceEsquerda];
+        livros->categorias[indiceMerged] = categoriasEsquerda[indiceEsquerda];
+        indiceEsquerda++;
+        indiceMerged++;
+    }
+
+    // Copiar os elementos restantes do subarray direito, se houver
+    while (indiceDireita < tamanhoDireita)
+    {
+        livros->livros[indiceMerged] = subArrayDireito[indiceDireita];
+        livros->categorias[indiceMerged] = categoriasDireita[indiceDireita];
+        indiceDireita++;
+        indiceMerged++;
+    }
+}
+
+// Função para ordenar um array de livros por ano de publicação usando merge sort
+void mergeSort(LivroArray *livros, int esquerda, int direita)
+{
+    if (esquerda < direita)
+    {
+        int meio = esquerda + (direita - esquerda) / 2;
+
+        // Ordenar a primeira metade e a segunda metade
+        mergeSort(livros, esquerda, meio);
+        mergeSort(livros, meio + 1, direita);
+
+        // Mesclar as metades ordenadas
+        merge(livros, esquerda, meio, direita);
+    }
 }
