@@ -47,6 +47,8 @@ int gerarcodigolivro(void);
 int gerarcodigocat(void);
 Categoria *verificacategoriaporcodigo(Biblioteca biblioteca, int codigocat);
 void mostrarcategorias(Biblioteca biblioteca);
+void mergeSort(LivroArray *livros, int esquerda, int direita);
+void merge(LivroArray *livros, int esquerda, int meio, int direita);
 
 int controlocodigolivro = 0;
 int controlocodigocat = 0;
