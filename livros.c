@@ -66,10 +66,10 @@ int main()
     biblioteca.categorias = categoria1;
     categoria1->prox = categoria2;
 
-    inserirLivro(categoria1, criarLivro(14,"Geronimo Stilton - O Fantasma do Metro", "Cristiano Ronaldo", 1997));
-    inserirLivro(categoria1, criarLivro(77,"Os Lusiadas", "Freddie Mercurie", 1954));
-    inserirLivro(categoria2, criarLivro(12,"O Principezinho", "The Weekend", 2011));
-    inserirLivro(categoria2, criarLivro(24,"World of Warcraft", "Michael Jackson", 1980));
+    inserirLivro(categoria1, criarLivro(14, "Geronimo Stilton - O Fantasma do Metro", "Cristiano Ronaldo", 1997));
+    inserirLivro(categoria1, criarLivro(77, "Os Lusiadas", "Freddie Mercurie", 1954));
+    inserirLivro(categoria2, criarLivro(12, "O Principezinho", "The Weekend", 2011));
+    inserirLivro(categoria2, criarLivro(24, "World of Warcraft", "Michael Jackson", 1980));
 
     int escolha;
     char titulo[100];
@@ -161,7 +161,7 @@ int main()
                     printf("Livro criado com sucesso!\n");
                 }
                 else
-                printf("Ja existe um livro com esse codigo ISBN!\n");
+                    printf("Ja existe um livro com esse codigo ISBN!\n");
             }
 
             break;
@@ -238,10 +238,10 @@ int main()
                     {
                         if (atualizarLivro(livro, titulo, autor, ano, novaCategoria, biblioteca))
                         {
-                        printf("Livro atualizado com sucesso!\n");
+                            printf("Livro atualizado com sucesso!\n");
                         }
                         else
-                        printf("Nao foi possivel atualizar o livro");
+                            printf("Nao foi possivel atualizar o livro");
                     }
                     break; // Sair do loop após atualizar o livro
                 }
@@ -264,9 +264,9 @@ int main()
                 if (livro != NULL)
                 {
                     if (eliminarLivro(cat, codigo))
-                    printf("Livro %d eliminado com sucesso!\n", codigo);
-                    else 
-                    printf("Nao foi possivel eliminar o livro");
+                        printf("Livro %d eliminado com sucesso!\n", codigo);
+                    else
+                        printf("Nao foi possivel eliminar o livro");
                     break;
                 }
                 cat = cat->prox;
@@ -302,8 +302,6 @@ int main()
 
     return 0;
 }
-
-
 
 int gerarcodigocat(void)
 {
@@ -412,28 +410,28 @@ Livro *criarLivro(int codigo, char titulo[], char autor[], int ano)
     strcpy(novoLivro->autor, autor);
     novoLivro->ano = ano;
     novoLivro->prox = NULL;
-    
+
     return novoLivro;
 }
 
 int inserirLivro(Categoria *categoria, Livro *novoLivro)
 {
-    
+
     if (categoria->livros == NULL)
     {
         categoria->livros = novoLivro;
         ++controlocodigolivro;
         return 1; // Livro inserido com sucesso
-        
     }
     else
     {
-        if (procurarLivro(categoria, novoLivro->codigo)!= NULL) {
-            
+        if (procurarLivro(categoria, novoLivro->codigo) != NULL)
+        {
+
             return 0; // ERRO ao inserir o livro
         }
         Livro *temp = categoria->livros;
-        while (temp->prox!= NULL)
+        while (temp->prox != NULL)
         {
             temp = temp->prox;
         }
@@ -485,7 +483,7 @@ int eliminarLivro(Categoria *categoria, int codigo)
     }
     if (temp == NULL)
     {
-        
+
         return 0;
     }
     if (prev == NULL)
@@ -555,11 +553,11 @@ int atualizarLivro(Livro *livro, char titulo[], char autor[], int ano, Categoria
     // Remover o livro da sua categoria atual
     Categoria *antigaCategoria = NULL;
     Categoria *cat = biblioteca.categorias;
-    while (cat!= NULL)
+    while (cat != NULL)
     {
         Livro *temp = cat->livros;
         Livro *prev = NULL;
-        while (temp!= NULL)
+        while (temp != NULL)
         {
             if (temp->codigo == livro->codigo)
             {
@@ -579,7 +577,7 @@ int atualizarLivro(Livro *livro, char titulo[], char autor[], int ano, Categoria
             prev = temp;
             temp = temp->prox;
         }
-        if (antigaCategoria!= NULL)
+        if (antigaCategoria != NULL)
         {
             break;
         }
@@ -587,7 +585,7 @@ int atualizarLivro(Livro *livro, char titulo[], char autor[], int ano, Categoria
     }
 
     // Atribuir o livro à nova categoria
-    if (antigaCategoria!= NULL)
+    if (antigaCategoria != NULL)
     {
         livro->prox = novaCategoria->livros;
         novaCategoria->livros = livro;
