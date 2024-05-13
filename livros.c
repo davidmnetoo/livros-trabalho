@@ -14,6 +14,7 @@ typedef struct Livro
 typedef struct Categoria
 {
     int codigocat;
+
     char nome[100];
     Livro *livros;
     struct Categoria *prox;
@@ -34,9 +35,9 @@ typedef struct LivroArray
 LivroArray *procurarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo);
 void mostrarbiblioteca(Biblioteca biblioteca);
 Categoria *verificaCategoria(Biblioteca biblioteca, const char *nomeCategoria);
-Livro *criarLivro(char titulo[], char autor[], int ano);
+Livro *criarLivro(int condigo, char titulo[], char autor[], int ano);
 Categoria *criarCategoria(char nome[]);
-void inserirLivro(Categoria *categoria, Livro *novoLivro);
+int inserirLivro(Categoria *categoria, Livro *novoLivro);
 void listarLivros(Categoria *categoria);
 Livro *procurarLivro(Categoria *categoria, int codigo);
 void eliminarLivro(Categoria *categoria, int codigo);
@@ -64,10 +65,10 @@ int main()
     biblioteca.categorias = categoria1;
     categoria1->prox = categoria2;
 
-    inserirLivro(categoria1, criarLivro("Geronimo Stilton - O Fantasma do Metro", "Cristiano Ronaldo", 1997));
-    inserirLivro(categoria1, criarLivro("Os Lusiadas", "Freddie Mercurie", 1954));
-    inserirLivro(categoria2, criarLivro("O Principezinho", "The Weekend", 2011));
-    inserirLivro(categoria2, criarLivro("World of Warcraft", "Michael Jackson", 1980));
+    inserirLivro(categoria1, criarLivro(14,"Geronimo Stilton - O Fantasma do Metro", "Cristiano Ronaldo", 1997));
+    inserirLivro(categoria1, criarLivro(77,"Os Lusiadas", "Freddie Mercurie", 1954));
+    inserirLivro(categoria2, criarLivro(12,"O Principezinho", "The Weekend", 2011));
+    inserirLivro(categoria2, criarLivro(24,"World of Warcraft", "Michael Jackson", 1980));
 
     int escolha;
     char titulo[100];
@@ -99,7 +100,7 @@ int main()
             ;
             if (categoriaLivro == NULL)
             {
-                printf("A categoria não existe.\n");
+                printf("A categoria nao existe.\n");
             }
             else
             {
@@ -136,6 +137,7 @@ int main()
             break;
 
         case 4:
+            codigo = pedirInteiro("Insira o codigo ISBN do livro: ");
             strcpy(titulo, pedirString("Introduza o titulo do livro: "));
             strcpy(autor, pedirString("Introduza o nome do autor: "));
             ano = pedirInteiro("Introduza o ano do livro: ");
@@ -155,8 +157,12 @@ int main()
             }
             else
             {
-                inserirLivro(categoriaLivro, criarLivro(titulo, autor, ano));
-                printf("Livro criado com sucesso!\n");
+                if (inserirLivro(categoriaLivro, criarLivro(codigo, titulo, autor, ano)))
+                {
+                    printf("Livro criado com sucesso!\n");
+                }
+                else
+                printf("Ja existe um livro com esse codigo ISBN!\n");
             }
 
             break;
@@ -374,7 +380,7 @@ Categoria *criarCategoria(char nome[])
     return novaCategoria;
 }
 
-Livro *criarLivro(char titulo[], char autor[], int ano)
+Livro *criarLivro(int codigo, char titulo[], char autor[], int ano)
 {
     Livro *novoLivro = (Livro *)malloc(sizeof(Livro));
     if (novoLivro == NULL)
@@ -382,29 +388,38 @@ Livro *criarLivro(char titulo[], char autor[], int ano)
         printf("Alocacao de memoria falhou!\n");
         exit(1);
     }
-    novoLivro->codigo = gerarcodigolivro();
+    novoLivro->codigo = codigo;
     strcpy(novoLivro->titulo, titulo);
     strcpy(novoLivro->autor, autor);
     novoLivro->ano = ano;
     novoLivro->prox = NULL;
+    
     return novoLivro;
 }
 
-void inserirLivro(Categoria *categoria, Livro *novoLivro)
+int inserirLivro(Categoria *categoria, Livro *novoLivro)
 {
+    
     if (categoria->livros == NULL)
     {
         categoria->livros = novoLivro;
+        return 1; // Livro inserido com sucesso
     }
     else
     {
+        if (procurarLivro(categoria, novoLivro->codigo)!= NULL) {
+            printf("Ja existe um livro com o codigo %d\n", novoLivro->codigo);
+            return 0; // ERRO ao inserir o livro
+        }
         Livro *temp = categoria->livros;
-        while (temp->prox != NULL)
+        while (temp->prox!= NULL)
         {
             temp = temp->prox;
         }
         temp->prox = novoLivro;
+        return 1; // Livro inserido com sucesso
     }
+    return 0; // ERRO ao inserir o livro
 }
 
 void listarLivros(Categoria *categoria)
