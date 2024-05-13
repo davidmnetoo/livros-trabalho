@@ -176,7 +176,7 @@ int main()
                 {
                     Livro *livro = livrosEncontrados->livros[i];
                     char *categoriaNome = livrosEncontrados->categorias[i];
-                    printf("Categoria: %s, Título: %s, Autor: %s, Ano: %d\n", categoriaNome, livro->titulo, livro->autor, livro->ano);
+                    printf("Categoria: %s, Titulo: %s, Autor: %s, Ano: %d\n", categoriaNome, livro->titulo, livro->autor, livro->ano);
                 }
                 char sortChoice;
                 do
@@ -208,9 +208,10 @@ int main()
             do
             {
                 codigo = pedirInteiro("Introduza o codigo ISBN do livro a atualizar: ");
-            } while (codigo <= 0 || codigo > controlocodigolivro);
+            } while (codigo <= 0);
 
             Categoria *cat = biblioteca.categorias;
+            int livroEncontrado = 0;
 
             while (cat != NULL)
             {
@@ -247,6 +248,11 @@ int main()
                 }
                 cat = cat->prox;
             }
+            // Verifica se o livro não foi encontrado em nenhuma categoria
+            if (!livroEncontrado)
+            {
+                printf("Livro com codigo %d nao encontrado.\n", codigo);
+            }
             break;
 
         case 7:
@@ -256,7 +262,7 @@ int main()
             } while (codigo <= 0);
 
             cat = biblioteca.categorias;
-            int livroEncontrado = 0; // Variável para indicar se o livro foi encontrado
+          livroEncontrado = 0; // Variável para indicar se o livro foi encontrado
 
             while (cat != NULL)
             {
