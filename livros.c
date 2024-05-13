@@ -250,13 +250,13 @@ int main()
             break;
 
         case 7:
-
             do
             {
                 codigo = pedirInteiro("Introduza o codigo do livro a eliminar: ");
             } while (codigo <= 0);
 
             cat = biblioteca.categorias;
+            int livroEncontrado = 0; // Variável para indicar se o livro foi encontrado
 
             while (cat != NULL)
             {
@@ -265,19 +265,23 @@ int main()
                 {
                     if (eliminarLivro(cat, codigo))
                     {
-                    printf("Livro %d eliminado com sucesso!\n", codigo);
-                   
+                        printf("Livro %d eliminado com sucesso!\n", codigo);
                     }
                     else
                     {
-                    printf("Nao foi possivel eliminar o livro");
+                        printf("Nao foi possivel eliminar.\n");
                     }
+                    livroEncontrado = 1; // Indica que o livro foi encontrado
                     break;
-                    
                 }
                 cat = cat->prox;
             }
-            printf("Livro não encontrado");
+
+            // Verifica se o livro não foi encontrado em nenhuma categoria
+            if (!livroEncontrado)
+            {
+                printf("Livro com codigo %d nao encontrado.\n", codigo);
+            }
             break;
 
         case 8:
