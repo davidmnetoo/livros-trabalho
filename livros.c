@@ -254,7 +254,7 @@ int main()
             do
             {
                 codigo = pedirInteiro("Introduza o codigo do livro a eliminar: ");
-            } while (codigo <= 0 || codigo > controlocodigolivro);
+            } while (codigo <= 0);
 
             cat = biblioteca.categorias;
 
