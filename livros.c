@@ -207,7 +207,7 @@ int main()
         case 6:
             do
             {
-                codigo = pedirInteiro("Introduza o codigo do livro a atualizar: ");
+                codigo = pedirInteiro("Introduza o codigo ISBN do livro a atualizar: ");
             } while (codigo <= 0 || codigo > controlocodigolivro);
 
             Categoria *cat = biblioteca.categorias;
@@ -218,7 +218,7 @@ int main()
                 if (livro != NULL)
                 {
                     // Atualizar informações do livro
-                    strcpy(titulo, pedirString("Introduza o novo título: "));
+                    strcpy(titulo, pedirString("Introduza o novo titulo: "));
                     strcpy(autor, pedirString("Introduza o novo autor: "));
                     ano = pedirInteiro("Introduza o novo ano: ");
                     mostrarcategorias(biblioteca);
