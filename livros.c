@@ -264,13 +264,20 @@ int main()
                 if (livro != NULL)
                 {
                     if (eliminarLivro(cat, codigo))
+                    {
                     printf("Livro %d eliminado com sucesso!\n", codigo);
-                    else 
+                   
+                    }
+                    else
+                    {
                     printf("Nao foi possivel eliminar o livro");
+                    }
                     break;
+                    
                 }
                 cat = cat->prox;
             }
+            printf("Livro não encontrado");
             break;
 
         case 8:
