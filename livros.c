@@ -436,7 +436,7 @@ int inserirLivro(Categoria *categoria, Livro *novoLivro)
     // Verificar se o livro já existe na categoria
     if (procurarLivro(categoria, novoLivro->codigo) != NULL)
     {
-        printf("Já existe um livro com esse código ISBN!\n");
+       
         return 0; // Retornar 0 para indicar falha na inserção
     }
 
