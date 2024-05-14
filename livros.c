@@ -32,23 +32,32 @@ typedef struct LivroArray
     int count;
 } LivroArray;
 
-LivroArray *procurarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo);
-void mostrarbiblioteca(Biblioteca biblioteca);
-Categoria *verificaCategoria(Biblioteca biblioteca, const char *nomeCategoria);
-Livro *criarLivro(int condigo, char titulo[], char autor[], int ano);
+// Funções de Criação
+Livro *criarLivro(int codigo, char titulo[], char autor[], int ano);
 Categoria *criarCategoria(char nome[]);
+// Funções de Inserção
 int inserirLivro(Categoria *categoria, Livro *novoLivro);
+// Funções de Exibição
+void mostrarBiblioteca(Biblioteca biblioteca);
 void listarLivros(Categoria *categoria);
+void mostrarCategorias(Biblioteca biblioteca);
+// Funções de Procura
+LivroArray *procurarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo);
 Livro *procurarLivro(Categoria *categoria, int codigo);
+Categoria *verificaCategoria(Biblioteca biblioteca, const char *nomeCategoria);
+Categoria *verificaCategoriaPorCodigo(Biblioteca biblioteca, int codigocat);
+// Funções de Eliminação
 int eliminarLivro(Categoria *categoria, int codigo);
 int eliminarCategoria(Biblioteca *biblioteca, int codigocat);
+// Funções de Atualização
 int atualizarLivro(Livro *livro, char titulo[], char autor[], int ano, Categoria *novaCategoria, Biblioteca biblioteca);
+// Funções de Entrada de Dados
 char *pedirString(const char *mensagem);
 int pedirInteiro(const char *mensagem);
+// Funções de Geração de Código
 int gerarcodigolivro(void);
 int gerarcodigocat(void);
-Categoria *verificacategoriaporcodigo(Biblioteca biblioteca, int codigocat);
-void mostrarcategorias(Biblioteca biblioteca);
+// Funções de Ordenação
 void mergeSort(LivroArray *livros, int esquerda, int direita);
 void merge(LivroArray *livros, int esquerda, int meio, int direita);
 
@@ -262,7 +271,7 @@ int main()
             } while (codigo <= 0);
 
             cat = biblioteca.categorias;
-          livroEncontrado = 0; // Variável para indicar se o livro foi encontrado
+            livroEncontrado = 0; // Variável para indicar se o livro foi encontrado
 
             while (cat != NULL)
             {
@@ -398,22 +407,6 @@ Categoria *verificaCategoria(Biblioteca biblioteca, const char *nomeCategoria)
     }
     return NULL; // Categoria não encontrada
 }
-
-Categoria *criarCategoria(char nome[])
-{
-    Categoria *novaCategoria = (Categoria *)malloc(sizeof(Categoria));
-    if (novaCategoria == NULL)
-    {
-        printf("Alocacao de memoria falhou!\n");
-        exit(1);
-    }
-    strcpy(novaCategoria->nome, nome);
-    novaCategoria->codigocat = gerarcodigocat();
-    novaCategoria->livros = NULL;
-    novaCategoria->prox = NULL;
-    return novaCategoria;
-}
-
 Livro *criarLivro(int codigo, char titulo[], char autor[], int ano)
 {
     Livro *novoLivro = (Livro *)malloc(sizeof(Livro));
@@ -431,12 +424,27 @@ Livro *criarLivro(int codigo, char titulo[], char autor[], int ano)
     return novoLivro;
 }
 
+Categoria *criarCategoria(char nome[])
+{
+    Categoria *novaCategoria = (Categoria *)malloc(sizeof(Categoria));
+    if (novaCategoria == NULL)
+    {
+        printf("Alocacao de memoria falhou!\n");
+        exit(1);
+    }
+    strcpy(novaCategoria->nome, nome);
+    novaCategoria->codigocat = gerarcodigocat();
+    novaCategoria->livros = NULL;
+    novaCategoria->prox = NULL;
+    return novaCategoria;
+}
+
 int inserirLivro(Categoria *categoria, Livro *novoLivro)
 {
     // Verificar se o livro já existe na categoria
     if (procurarLivro(categoria, novoLivro->codigo) != NULL)
     {
-       
+
         return 0; // Retornar 0 para indicar falha na inserção
     }
 
