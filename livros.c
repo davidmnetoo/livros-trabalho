@@ -104,7 +104,7 @@ int main()
 
             } while (codigocat < 1 || codigocat > controlocodigocat);
 
-            Categoria *categoriaLivro = verificacategoriaporcodigo(biblioteca, codigocat);
+            Categoria *categoriaLivro = verifiCacategoriaPorCodigo(biblioteca, codigocat);
             ;
             if (categoriaLivro == NULL)
             {
@@ -157,7 +157,7 @@ int main()
 
             } while (codigocat < 1 || codigocat > controlocodigocat);
 
-            categoriaLivro = verificacategoriaporcodigo(biblioteca, codigocat);
+            categoriaLivro = verificaCategoriaPorCodigo(biblioteca, codigocat);
             ;
             if (categoriaLivro == NULL)
             {
@@ -239,7 +239,7 @@ int main()
 
                     } while (codigocat < 1 || codigocat > controlocodigocat);
 
-                    Categoria *novaCategoria = verificacategoriaporcodigo(biblioteca, codigocat);
+                    Categoria *novaCategoria = verificaCategoriaPorCodigo(biblioteca, codigocat);
                     if (novaCategoria == NULL)
                     {
                         printf("A categoria nao existe");
@@ -380,7 +380,7 @@ void mostrarCategorias(Biblioteca biblioteca)
     }
 }
 
-Categoria *verificacategoriaporcodigo(Biblioteca biblioteca, int codigo)
+Categoria *verificaCategoriaPorCodigo(Biblioteca biblioteca, int codigo)
 {
     Categoria *cat = biblioteca.categorias;
     while (cat != NULL)
