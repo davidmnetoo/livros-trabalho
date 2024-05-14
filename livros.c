@@ -93,10 +93,10 @@ int main()
         switch (escolha)
         {
         case 1:
-            mostrarbiblioteca(biblioteca);
+            mostrarBiblioteca(biblioteca);
             break;
         case 2:
-            mostrarcategorias(biblioteca);
+            mostrarCategorias(biblioteca);
             int codigocat;
             do
             {
@@ -149,7 +149,7 @@ int main()
             strcpy(titulo, pedirString("Introduza o titulo do livro: "));
             strcpy(autor, pedirString("Introduza o nome do autor: "));
             ano = pedirInteiro("Introduza o ano do livro: ");
-            mostrarcategorias(biblioteca);
+            mostrarCategorias(biblioteca);
 
             do
             {
@@ -231,7 +231,7 @@ int main()
                     strcpy(titulo, pedirString("Introduza o novo titulo: "));
                     strcpy(autor, pedirString("Introduza o novo autor: "));
                     ano = pedirInteiro("Introduza o novo ano: ");
-                    mostrarcategorias(biblioteca);
+                    mostrarCategorias(biblioteca);
 
                     do
                     {
@@ -301,7 +301,7 @@ int main()
 
         case 8:
             /*  int codigocat; */
-            mostrarcategorias(biblioteca);
+            mostrarCategorias(biblioteca);
             do
             {
                 codigocat = pedirInteiro("Introduza o numero da categoria que deseja eliminar: ");
@@ -357,7 +357,7 @@ int pedirInteiro(const char *mensagem)
     return entrada;
 }
 
-void mostrarbiblioteca(Biblioteca biblioteca)
+void mostrarBiblioteca(Biblioteca biblioteca)
 {
     Categoria *cat = biblioteca.categorias;
     while (cat != NULL)
@@ -370,7 +370,7 @@ void mostrarbiblioteca(Biblioteca biblioteca)
     }
 }
 
-void mostrarcategorias(Biblioteca biblioteca)
+void mostrarCategorias(Biblioteca biblioteca)
 {
     Categoria *cat = biblioteca.categorias;
     while (cat != NULL)
