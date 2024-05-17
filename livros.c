@@ -50,11 +50,13 @@ Categoria *verificaCategoriaPorCodigo(Biblioteca biblioteca, int codigocat);
 int eliminarLivro(Categoria *categoria, int codigo);
 int eliminarCategoria(Biblioteca *biblioteca, int codigocat);
 // Funções de Atualização
-int atualizarLivro(Livro *livro, char titulo[], char autor[], int ano, Categoria *novaCategoria, Biblioteca biblioteca);
+int atualizarLivro(Livro *livro, char titulo[], char autor[], int ano,
+                   Categoria *novaCategoria, Biblioteca biblioteca);
 // Funções de Entrada de Dados
 char *pedirString(const char *mensagem);
 int pedirInteiro(const char *mensagem);
-// Função de Geração de Código
+// Funções de Geração de Código
+int gerarcodigolivro(void);
 int gerarcodigocat(void);
 // Funções de Ordenação
 void mergeSort(LivroArray *livros, int esquerda, int direita);
@@ -74,10 +76,15 @@ int main()
     biblioteca.categorias = categoria1;
     categoria1->prox = categoria2;
 
-    inserirLivro(categoria1, criarLivro(14, "Geronimo Stilton - O Fantasma do Metro", "Cristiano Ronaldo", 1997));
-    inserirLivro(categoria1, criarLivro(77, "Os Lusiadas", "Freddie Mercurie", 1954));
-    inserirLivro(categoria2, criarLivro(12, "O Principezinho", "The Weekend", 2011));
-    inserirLivro(categoria2, criarLivro(24, "World of Warcraft", "Michael Jackson", 1980));
+    inserirLivro(categoria1,
+                 criarLivro(14, "Geronimo Stilton - O Fantasma do Metro",
+                            "Cristiano Ronaldo", 1997));
+    inserirLivro(categoria1,
+                 criarLivro(77, "Os Lusiadas", "Freddie Mercurie", 1954));
+    inserirLivro(categoria2,
+                 criarLivro(12, "O Principezinho", "The Weekend", 2011));
+    inserirLivro(categoria2,
+                 criarLivro(24, "World of Warcraft", "Michael Jackson", 1980));
 
     int escolha;
     char titulo[100];
@@ -87,7 +94,11 @@ int main()
 
     do
     {
-        escolha = pedirInteiro("\nMenu:\n1. Mostrar biblioteca\n2. Listar livros numa categoria\n3. Criar categoria\n4. Adicionar livro\n5. Procurar um livro por titulo\n6. Atualizar informacoes de um livro\n7. Eliminar um livro\n8. Eliminar uma Categoria\n0. Sair\nEscolha: ");
+        escolha = pedirInteiro(
+            "\nMenu:\n1. Mostrar biblioteca\n2. Listar livros numa categoria\n3. "
+            "Criar categoria\n4. Adicionar livro\n5. Procurar um livro por "
+            "titulo\n6. Atualizar informacoes de um livro\n7. Eliminar um "
+            "livro\n8. Eliminar uma Categoria\n0. Sair\nEscolha: ");
 
         switch (escolha)
         {
@@ -99,11 +110,13 @@ int main()
             int codigocat;
             do
             {
-                codigocat = pedirInteiro("Introduza o numero da categoria que procura: ");
+                codigocat =
+                    pedirInteiro("Introduza o numero da categoria que procura: ");
 
             } while (codigocat < 1 || codigocat > controlocodigocat);
 
-            Categoria *categoriaLivro = verificaCategoriaPorCodigo(biblioteca, codigocat);
+            Categoria *categoriaLivro =
+                verificaCategoriaPorCodigo(biblioteca, codigocat);
             ;
             if (categoriaLivro == NULL)
             {
@@ -160,11 +173,13 @@ int main()
             ;
             if (categoriaLivro == NULL)
             {
-                printf("A categoria nao existe, deve ser criada antes de adicionar livros nela");
+                printf("A categoria nao existe, deve ser criada antes de adicionar "
+                       "livros nela");
             }
             else
             {
-                if (inserirLivro(categoriaLivro, criarLivro(codigo, titulo, autor, ano)))
+                if (inserirLivro(categoriaLivro,
+                                 criarLivro(codigo, titulo, autor, ano)))
                 {
                     printf("Livro criado com sucesso!\n");
                 }
@@ -176,7 +191,8 @@ int main()
 
         case 5:
             strcpy(titulo, pedirString("Introduza o titulo do livro a procurar: "));
-            LivroArray *livrosEncontrados = procurarLivrosPorTitulo(biblioteca, titulo);
+            LivroArray *livrosEncontrados =
+                procurarLivrosPorTitulo(biblioteca, titulo);
             if (livrosEncontrados->count > 0)
             {
                 printf("Livros encontrados:\n");
@@ -184,13 +200,16 @@ int main()
                 {
                     Livro *livro = livrosEncontrados->livros[i];
                     char *categoriaNome = livrosEncontrados->categorias[i];
-                    printf("Categoria: %s, Titulo: %s, Autor: %s, Ano: %d\n", categoriaNome, livro->titulo, livro->autor, livro->ano);
+                    printf("Categoria: %s, Titulo: %s, Autor: %s, Ano: %d\n",
+                           categoriaNome, livro->titulo, livro->autor, livro->ano);
                 }
                 char sortChoice;
                 do
                 {
-                    sortChoice = pedirString("Deseja ordenar os resultados por ano? (S/N) ")[0];
-                } while (sortChoice != 'n' && sortChoice != 'N' && sortChoice != 's' && sortChoice != 'S');
+                    sortChoice =
+                        pedirString("Deseja ordenar os resultados por ano? (S/N) ")[0];
+                } while (sortChoice != 'n' && sortChoice != 'N' && sortChoice != 's' &&
+                         sortChoice != 'S');
 
                 if (sortChoice == 'S' || sortChoice == 's')
                 {
@@ -200,7 +219,8 @@ int main()
                     {
                         Livro *livro = livrosEncontrados->livros[i];
                         char *categoriaNome = livrosEncontrados->categorias[i];
-                        printf("Categoria: %s, Titulo: %s, Autor: %s, Ano: %d\n", categoriaNome, livro->titulo, livro->autor, livro->ano);
+                        printf("Categoria: %s, Titulo: %s, Autor: %s, Ano: %d\n",
+                               categoriaNome, livro->titulo, livro->autor, livro->ano);
                         free(categoriaNome); // Liberar o nome da categoria duplicada
                     }
                 }
@@ -238,14 +258,16 @@ int main()
 
                     } while (codigocat < 1 || codigocat > controlocodigocat);
 
-                    Categoria *novaCategoria = verificaCategoriaPorCodigo(biblioteca, codigocat);
+                    Categoria *novaCategoria =
+                        verificaCategoriaPorCodigo(biblioteca, codigocat);
                     if (novaCategoria == NULL)
                     {
                         printf("A categoria nao existe");
                     }
                     else
                     {
-                        if (atualizarLivro(livro, titulo, autor, ano, novaCategoria, biblioteca))
+                        if (atualizarLivro(livro, titulo, autor, ano, novaCategoria,
+                                           biblioteca))
                         {
                             printf("Livro atualizado com sucesso!\n");
                         }
@@ -303,7 +325,8 @@ int main()
             mostrarCategorias(biblioteca);
             do
             {
-                codigocat = pedirInteiro("Introduza o numero da categoria que deseja eliminar: ");
+                codigocat = pedirInteiro(
+                    "Introduza o numero da categoria que deseja eliminar: ");
             } while (codigocat < 1 || codigocat > controlocodigocat);
 
             if (eliminarCategoria(&biblioteca, codigocat))
@@ -328,10 +351,7 @@ int main()
     return 0;
 }
 
-int gerarcodigocat(void)
-{
-    return ++controlocodigocat;
-}
+int gerarcodigocat(void) { return ++controlocodigocat; }
 
 char *pedirString(const char *mensagem)
 {
@@ -412,7 +432,7 @@ Livro *criarLivro(int codigo, char titulo[], char autor[], int ano)
     if (novoLivro == NULL)
     {
         printf("Alocacao de memoria falhou!\n");
-        return NULL;
+        exit(1);
     }
     novoLivro->codigo = codigo;
     strcpy(novoLivro->titulo, titulo);
@@ -429,7 +449,7 @@ Categoria *criarCategoria(char nome[])
     if (novaCategoria == NULL)
     {
         printf("Alocacao de memoria falhou!\n");
-        return NULL;
+        exit(1);
     }
     strcpy(novaCategoria->nome, nome);
     novaCategoria->codigocat = gerarcodigocat();
@@ -478,7 +498,8 @@ void listarLivros(Categoria *categoria)
     Livro *temp = categoria->livros;
     while (temp != NULL)
     {
-        printf("Codigo ISBN: %d, Titulo: %s, Autor: %s, Ano: %d\n", temp->codigo, temp->titulo, temp->autor, temp->ano);
+        printf("Codigo ISBN: %d, Titulo: %s, Autor: %s, Ano: %d\n", temp->codigo,
+               temp->titulo, temp->autor, temp->ano);
         temp = temp->prox;
     }
 }
@@ -568,7 +589,8 @@ int eliminarCategoria(Biblioteca *biblioteca, int codigocat)
     return 1;
 }
 
-int atualizarLivro(Livro *livro, char titulo[], char autor[], int ano, Categoria *novaCategoria, Biblioteca biblioteca)
+int atualizarLivro(Livro *livro, char titulo[], char autor[], int ano,
+                   Categoria *novaCategoria, Biblioteca biblioteca)
 {
     // Atualizar as informações do livro
     strcpy(livro->titulo, titulo);
@@ -627,7 +649,7 @@ LivroArray *procurarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo)
     if (result == NULL)
     {
         printf("Erro de alocacao de memoria.\n");
-        return NULL;
+        exit(EXIT_FAILURE);
     }
     result->livros = NULL;
     result->categorias = NULL;
@@ -642,12 +664,14 @@ LivroArray *procurarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo)
             if (strcmp(livro->titulo, titulo) == 0)
             {
                 // Aumentar o tamanho dos arrays
-                result->livros = realloc(result->livros, (result->count + 1) * sizeof(Livro *));
-                result->categorias = realloc(result->categorias, (result->count + 1) * sizeof(char *));
+                result->livros =
+                    realloc(result->livros, (result->count + 1) * sizeof(Livro *));
+                result->categorias =
+                    realloc(result->categorias, (result->count + 1) * sizeof(char *));
                 if (result->livros == NULL || result->categorias == NULL)
                 {
                     printf("Erro de alocacao de memoria.\n");
-                    return NULL;
+                    exit(0);
                 }
                 // Armazenar o ponteiro do livro correspondente e o nome da categoria
                 result->livros[result->count] = livro;
@@ -662,7 +686,8 @@ LivroArray *procurarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo)
     return result;
 }
 
-// Função para mesclar dois subarrays de livros em ordem crescente de ano de publicação
+// Função para mesclar dois subarrays de livros em ordem crescente de ano de
+// publicação
 void merge(LivroArray *livros, int esquerda, int meio, int direita)
 {
     int indiceEsquerda = 0, indiceDireita = 0, indiceMerged = esquerda;
@@ -690,7 +715,8 @@ void merge(LivroArray *livros, int esquerda, int meio, int direita)
     // Mesclar os arrays temporários de volta para livros
     while (indiceEsquerda < tamanhoEsquerda && indiceDireita < tamanhoDireita)
     {
-        if (subArrayEsquerdo[indiceEsquerda]->ano <= subArrayDireito[indiceDireita]->ano)
+        if (subArrayEsquerdo[indiceEsquerda]->ano <=
+            subArrayDireito[indiceDireita]->ano)
         {
             livros->livros[indiceMerged] = subArrayEsquerdo[indiceEsquerda];
             livros->categorias[indiceMerged] = categoriasEsquerda[indiceEsquerda];
