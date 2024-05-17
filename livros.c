@@ -54,8 +54,7 @@ int atualizarLivro(Livro *livro, char titulo[], char autor[], int ano, Categoria
 // Funções de Entrada de Dados
 char *pedirString(const char *mensagem);
 int pedirInteiro(const char *mensagem);
-// Funções de Geração de Código
-int gerarcodigolivro(void);
+// Função de Geração de Código
 int gerarcodigocat(void);
 // Funções de Ordenação
 void mergeSort(LivroArray *livros, int esquerda, int direita);
@@ -104,7 +103,7 @@ int main()
 
             } while (codigocat < 1 || codigocat > controlocodigocat);
 
-            Categoria *categoriaLivro = verifiCacategoriaPorCodigo(biblioteca, codigocat);
+            Categoria *categoriaLivro = verificaCategoriaPorCodigo(biblioteca, codigocat);
             ;
             if (categoriaLivro == NULL)
             {
@@ -413,7 +412,7 @@ Livro *criarLivro(int codigo, char titulo[], char autor[], int ano)
     if (novoLivro == NULL)
     {
         printf("Alocacao de memoria falhou!\n");
-        exit(1);
+        return NULL;
     }
     novoLivro->codigo = codigo;
     strcpy(novoLivro->titulo, titulo);
@@ -430,7 +429,7 @@ Categoria *criarCategoria(char nome[])
     if (novaCategoria == NULL)
     {
         printf("Alocacao de memoria falhou!\n");
-        exit(1);
+        return NULL;
     }
     strcpy(novaCategoria->nome, nome);
     novaCategoria->codigocat = gerarcodigocat();
@@ -628,7 +627,7 @@ LivroArray *procurarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo)
     if (result == NULL)
     {
         printf("Erro de alocacao de memoria.\n");
-        exit(EXIT_FAILURE);
+        return NULL;
     }
     result->livros = NULL;
     result->categorias = NULL;
@@ -648,7 +647,7 @@ LivroArray *procurarLivrosPorTitulo(Biblioteca biblioteca, const char *titulo)
                 if (result->livros == NULL || result->categorias == NULL)
                 {
                     printf("Erro de alocacao de memoria.\n");
-                    exit(0);
+                    return NULL;
                 }
                 // Armazenar o ponteiro do livro correspondente e o nome da categoria
                 result->livros[result->count] = livro;
